@@ -1,0 +1,25 @@
+- name: Create namespace
+  k8s:
+    name: "{{ namespace }}"
+    kind: Namespace
+    state: present
+
+- name: Download argocd manifest to local.
+  get_url:
+    url: '{{ item.url }}'
+    dest: '~/.manifest/{{ item.name }}'
+    mode: '0664'
+  loop:
+    - { url: 'https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml', name: 'argocd.yaml'  }
+
+- name: Apply argocd manifest to the cluster.
+  kubernetes.core.k8s:
+    namespace: "{{ namespace }}"
+    state: present
+    src: "~/.manifest/argocd.yaml"
+
+- name: Create argocd ingress
+  k8s:
+    state: present
+    namespace: "{{ namespace }}"
+    definition: "{{ lookup('template', 'argocd-ingress.yml' ) | from_yaml }}"

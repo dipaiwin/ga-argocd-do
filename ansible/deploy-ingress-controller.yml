@@ -1,0 +1,10 @@
+- hosts: all
+  environment:
+    KUBECONFIG: .kube/kubeconfig
+  collections:
+    - community.kubernetes.k8s
+  vars:
+    cert_manager_namespace: cert-manager
+  roles:
+    - { role: ingress_controller, tags: ingress_controller }
+    - { role: cert_manager,       tags: cert_manager       }

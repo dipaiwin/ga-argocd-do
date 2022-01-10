@@ -1,0 +1,22 @@
+- name: create manifest dir
+  file:
+    path: ~/.manifest
+    mode: "0755"
+    state: directory
+
+- name: Download ingress controller manifest to local.
+  get_url:
+    url: '{{ item.url }}'
+    dest: '~/.manifest/{{ item.name }}'
+    mode: '0664'
+  loop:
+    - { url: 'https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.26.1/deploy/static/mandatory.yaml',              name: 'mandatory.yaml'     }
+    - { url: 'https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.26.1/deploy/static/provider/cloud-generic.yaml', name: 'cloud-generic.yaml' }
+
+- name: Apply ingress controller manifest to the cluster.
+  kubernetes.core.k8s:
+    state: present
+    src: "~/.manifest/{{ item }}"
+  loop:
+    - 'mandatory.yaml'
+    - 'cloud-generic.yaml'

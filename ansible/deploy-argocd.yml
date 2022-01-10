@@ -1,0 +1,10 @@
+- hosts: all
+  environment:
+    KUBECONFIG: .kube/kubeconfig
+  collections:
+    - community.kubernetes.k8s
+  vars:
+    namespace: "argocd"
+    argocd_domain: "argocd.whiterr.xyz"
+  roles:
+    - { role: argocd, tags: argocd }

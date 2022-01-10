@@ -1,0 +1,25 @@
+- name: Create namespace
+  k8s:
+    name: "{{ cert_manager_namespace }}"
+    kind: Namespace
+    state: present
+
+- name: Download certmanager manifest to local.
+  get_url:
+    url: '{{ item.url }}'
+    dest: '~/.manifest/{{ item.name }}'
+    mode: '0664'
+  loop:
+    - { url: 'https://github.com/jetstack/cert-manager/releases/download/v0.13.0/cert-manager.yaml', name: 'cert-manager.yaml'  }
+
+- name: Apply certmanager manifest to the cluster.
+  k8s:
+    namespace: "{{ cert_manager_namespace }}"
+    state: present
+    src: "~/.manifest/cert-manager.yaml"
+
+- name: Deploy issuer
+  k8s:
+    namespace: "{{ cert_manager_namespace }}"
+    state: present
+    definition: "{{ lookup('template', 'issuer.yml' ) | from_yaml }}"
