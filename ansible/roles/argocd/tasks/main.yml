@@ -18,8 +18,11 @@
     state: present
     src: "~/.manifest/argocd.yaml"
 
-- name: Create argocd ingress
+- name: Create argocd ext manifest
   k8s:
     state: present
     namespace: "{{ namespace }}"
-    definition: "{{ lookup('template', 'argocd-ingress.yml' ) | from_yaml }}"
+    definition: "{{ lookup('template', item ) | from_yaml }}"
+  loop:
+    - argocd-cm.yml
+    - argocd-ingress.yml
