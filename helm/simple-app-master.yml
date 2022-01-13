@@ -3,7 +3,7 @@ replicaCount: 3
 image:
   repository: registry.digitalocean.com/dp-registry/simple-app
   pullPolicy: IfNotPresent
-  tag: eb3f1c0f05ebcff2deff81df38ed347e70cb2721-dev
+  tag: 047f547421149256ae16c2d3774da25202f663f9
 
 nameOverride: "-prod"
 
