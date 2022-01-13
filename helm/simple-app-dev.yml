@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: registry.digitalocean.com/dp-registry/simple-app
+  pullPolicy: IfNotPresent
+  tag: eb3f1c0f05ebcff2deff81df38ed347e70cb2721-dev
+
+nameOverride: "-dev"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: simple-app-dev.whiterr.xyz
+      paths:
+        - "/"
+  tls:
+    - secretName: simple-app-tls
+      hosts:
+        - simple-app-dev.whiterr.xyz
