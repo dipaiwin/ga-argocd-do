@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: simple-app-master
+spec:
+  destination:
+    name: ''
+    namespace: simple-app-master
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: helm/charts/simple-app
+    repoURL: 'https://github.com/dipaiwin/ga-argocd-do'
+    targetRevision: main
+    valueFiles:
+      - simple-app-master.yml
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=background
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true

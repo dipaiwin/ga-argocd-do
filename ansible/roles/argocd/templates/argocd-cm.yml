@@ -7,16 +7,6 @@ metadata:
   name: argocd-cm
 data:
   accounts.admin: apiKey,login
-  policy.default: role:readonly
-  policy.csv: |
-    p, role:org-admin, applications, *, */*, allow
-    p, role:org-admin, clusters, *, *, allow
-    p, role:org-admin, repositories, *, *, allow
-    p, role:org-admin, projects, *, *, allow
-    p, role:org-admin, certificates, *, *, allow
-    p, role:org-admin, accounts, *, *, allow
-    p, role:org-admin, gpgkeys, *, *, allow
-    g, my-org-123:main, role:org-admin
   url: "https://{{ argocd_domain }}"
   dex.config: |
     connectors:

@@ -25,4 +25,15 @@
     definition: "{{ lookup('template', item ) | from_yaml }}"
   loop:
     - argocd-cm.yml
+    - argocd-rbac-cm.yml
     - argocd-ingress.yml
+
+- name: deploy argocd repos and apps
+  tags: deploy_argocd_config
+  k8s:
+    state: present
+    namespace: "{{ namespace }}"
+    definition: "{{ lookup('template', item ) | from_yaml }}"
+  loop:
+    - apps/simple-app-repo.yml
+    - apps/simple-app-master.yml
