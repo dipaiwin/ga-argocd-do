@@ -37,3 +37,4 @@
   loop:
     - apps/simple-app-repo.yml
     - apps/simple-app-master.yml
+    - apps/simple-app-dev.yml

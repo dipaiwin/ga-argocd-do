@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: simple-app-master
+  name: simple-app-dev
 spec:
   destination:
     name: ''
-    namespace: simple-app-master
+    namespace: simple-app-dev
     server: 'https://kubernetes.default.svc'
   source:
     path: helm/charts/simple-app
@@ -13,7 +13,7 @@ spec:
     targetRevision: main
     helm:
       valueFiles:
-        - simple-app-master.yml
+        - simple-app-dev.yml
   project: default
   syncPolicy:
     automated:
